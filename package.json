@@ -1,25 +1,35 @@
 {
   "name": "poe-party-finder",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-scripts": "2.0.4"
+  "version": "1.0.0",
+  "main": "server/server.js",
+  "engines": {
+    "node": ">=6"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "lint": "eslint .",
+    "start": "node .",
+    "posttest": "npm run lint"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "dependencies": {
+    "axios": "^0.18.0",
+    "compression": "^1.0.3",
+    "cors": "^2.5.2",
+    "helmet": "^3.10.0",
+    "loopback": "^3.22.0",
+    "loopback-boot": "^2.6.5",
+    "loopback-component-explorer": "^6.2.0",
+    "loopback-connector-mongodb": "^3.9.2",
+    "serve-favicon": "^2.0.1",
+    "strong-error-handler": "^3.0.0"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-loopback": "^8.0.0"
+  },
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "license": "UNLICENSED",
+  "description": "poe-party-finder"
 }
