@@ -1,17 +1,35 @@
 .App {
   text-align: center;
 }
+.App-body {
+  background-image: url("static/synthesis-combat.jpg");
+  background-color: #282c34;
+  background-repeat: no-repeat;
+  background-clip: content-box;
+  background-blend-mode: soft-light;
+  height: 94vh;
 
+}
+.App-body-container {
+  background-color: rgba(40, 44, 52, .85);
+  color: azure;
+  background-blend-mode: overlay;
+  margin: auto auto;
+  margin-inside: 10px;
+  width: 50vw;
+  height: 90%;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: rgba(40, 40, 52, 0.95);
   display: flex;
   flex-direction: row;
-  color: white;
+  color: ghostwhite;
   width: 100vw;
+  height: 6vh;
 }
 .App-header-title {
   order: 0;
@@ -25,7 +43,16 @@
 .App-link {
   color: #61dafb;
 }
-
+.RML-btn {
+  background-color: #0f304d;
+  color: #c8c8c8;
+}
+.RML-btn:hover {
+  background-color: #10385a;
+}
+.RML-btn:hover > span {
+  color: rgba(115, 158, 177, 0.97);
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
-import ReactModalLogin from "react-modal-login";
+import ReactModalLogin from 'react-modal-login';
 import Cookies from 'universal-cookie';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import About from './Components/About/About';
+import List from './Components/List/List';
 
 const cookies = new Cookies();
 
@@ -239,14 +242,14 @@ class App extends Component {
                 className="RML-btn"
                 onClick={() => this.openModal('login')}
               >
-                Login
+                <span>Login</span>
               </button>
             }
-            <button
+            &nbsp;&nbsp;<button
               className="RML-btn"
               onClick={() => this.openModal('register')}
             >
-              Register
+              <span>Register</span>
             </button>
 
             <ReactModalLogin
@@ -363,19 +366,27 @@ class App extends Component {
                           }
                         }}*/
             />
-            {loggedIn}
+
           </div>
         </header>
-        {this.state.loggedIn ?
-          <div className="about">
-          Welcome {this.state.username}
+        <div className="App-body">
+          <br />
+        <Router>
+          <div className="App-body-container">
+            <Route
+              path='/'
+              render={(props) => <About {...props} loggedIn={this.state.loggedIn} username={this.state.username}/>}
+              />
+            <Route
+              path='/list'
+              render={(props) => <List />}
+            />
           </div>
-          :
-          <div className="about">
-            Please sign up or log in!
-          </div>
-        }
-
+        </Router>
+        <footer>
+            &copy; Shane LeBlanc 2019
+        </footer>
+        </div>
       </div>
 
     );
