@@ -7,7 +7,10 @@ import Cookies from 'universal-cookie';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import About from './Components/About/About';
 import List from './Components/List/List';
+import Swal from 'sweetalert2';
+import CreateProfile from "./Components/CreateProfile/CreateProfile";
 
+const swal = require('sweetalert2');
 const cookies = new Cookies();
 
 const styles = {
@@ -25,7 +28,7 @@ class App extends Component {
     loggedIn: null,
     loading: false,
     error: null,
-    initialTab: null,
+    initialTab: "register",
     recoverPasswordSuccess: null,
     name: [],
     date: [],
@@ -51,20 +54,44 @@ class App extends Component {
         }
 
       })
+      .catch(err => {
+        if (err.response.status === 401) {
+          swal.fire({
+            title: 'Hang on...',
+            text: 'Invalid username/password combination',
+            type: 'error',
+            confirmButtonText: 'Oops'
+          })
+        }
+        else {
+          swal.fire({
+            title: 'Error',
+            text: 'Status code: ' + err.response.status,
+            type: 'error',
+            confirmButtonText: 'Whatever'
+          })
+        }
+      })
   }
   logOut() {
+    // clear token from db
+    axios.post('http://localhost:8080/api/Users/logout?access_token='+this.state.token);
+    // clear state
     this.setState({
       token: "",
       userId: "",
       loggedIn: false,
       username: "",
       loading: false
-    })
+    });
+    // clear cookies
     cookies.remove('token', {path: '/'});
     cookies.remove('userId', {path: '/'});
+    this.render();
   }
 
   signUp(realm, username, email, password) {
+    console.log("_signUp_");
     axios.post('http://localhost:8080/api/Users', {
       "realm": realm,
       "username": username,
@@ -77,11 +104,26 @@ class App extends Component {
           this.logIn(username, password);
         }
         else {
-          alert(res["error"]["message"])
+          alert(res["error"]["message"]);
         }
       })
       .catch(err => {
-        console.error(err);
+        if (err.response.status === 422){
+          swal.fire({
+            title: 'Hang on...',
+            text: 'Username or email address already in use.',
+            type: 'error',
+            confirmButtonText: 'Got it.'
+          })
+        }
+        else {
+          swal.fire({
+            title: 'Error',
+            text: 'Status code: ' + err.response.status,
+            type: 'error',
+            confirmButtonText: 'Whatever'
+          })
+        }
       })
   }
 
@@ -114,8 +156,14 @@ class App extends Component {
 
     if (!login || !email || !password) {
       this.setState({
-        error: true
-      })
+        error: true,
+      });
+      swal.fire({
+        title: 'Incomplete',
+        text: 'All three fields are required!',
+        type: 'error',
+        confirmButtonText: 'My bad'
+      });
     } else {
       this.signUp("testRealm", login, email, password);
     }
@@ -159,7 +207,7 @@ class App extends Component {
       userId: userId,
       loggedIn: method,
       loading: false
-    })
+    });
     this.getUser(userId, token);
   }
 
@@ -214,45 +262,38 @@ class App extends Component {
 
   render() {
 
-    const loggedIn = this.state.loggedIn
-      ? <div>
-        <p>Welcome, {this.state.username}</p>
-      </div>
-      : <div>
-        <p>You are signed out</p>
-      </div>;
-
     const isLoading = this.state.loading;
     return (
       <div className="App">
         <header className="App-header">
           <div className="App-header-title">
-            Path of Exile Party Finder
+            PoE Party Finder
           </div>
           <div className="App-header-login">
             {this.state.loggedIn ?
-              <button
+              <div><button
                 className="RML-btn"
                 onClick={() => this.logOut()}
               >
                 Logout
-              </button>
+              </button></div>
               :
-              <button
+              <div><button
                 className="RML-btn"
                 onClick={() => this.openModal('login')}
               >
                 <span>Login</span>
               </button>
-            }
-            &nbsp;&nbsp;<button
+              <button
               className="RML-btn"
               onClick={() => this.openModal('register')}
-            >
+              >
               <span>Register</span>
-            </button>
+              </button></div>
+            }
 
-            <ReactModalLogin
+
+            <div><ReactModalLogin
               visible={this.state.showModal}
               onCloseModal={this.closeModal.bind(this)}
               loading={isLoading}
@@ -366,6 +407,7 @@ class App extends Component {
                           }
                         }}*/
             />
+            </div>
 
           </div>
         </header>
@@ -374,12 +416,22 @@ class App extends Component {
         <Router>
           <div className="App-body-container">
             <Route
-              path='/'
-              render={(props) => <About {...props} loggedIn={this.state.loggedIn} username={this.state.username}/>}
+              exact path='/'
+              render={(props) => <About {...props}
+                                        loggedIn={this.state.loggedIn}
+                                        username={this.state.username}
+                                        profileCreated={this.state.profileCreated}
+              />}
               />
             <Route
               path='/list'
               render={(props) => <List />}
+            />
+            <Route
+              path='/createProfile'
+              render={(props) => <CreateProfile {...props}
+                                                loggedIn={this.state.loggedIn}
+                                                username={this.state.username}/>}
             />
           </div>
         </Router>

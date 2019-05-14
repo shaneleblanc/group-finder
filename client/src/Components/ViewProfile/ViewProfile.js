@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
-
-class About extends Component {
+class ViewProfile extends Component {
   constructor(props){
     super(props);
   }
@@ -10,10 +8,7 @@ class About extends Component {
     return (
       <div className="about">
         {this.props.loggedIn ?
-          <div>
           <p>Welcome {this.props.username}</p>
-          <p><Link to="/createProfile">{'Create your profile'}</Link></p>
-          </div>
           :
           <p>Please sign up or log in!</p>
         }
@@ -22,4 +17,4 @@ class About extends Component {
   }
 };
 
-export default About;
+export default ViewProfile;

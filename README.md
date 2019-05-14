@@ -9,7 +9,7 @@ A social online game tool for finding groups of other players to play with.
 - [X] Sign Up / Authentication (react-modal-login)
 - [X] Cookie support (universal-cookie)
 - [X] Database Storage (MongoDB Atlas)
-- [X] Back-end  API (StrongLoop)
+- [X] Back-end  API (LoopBack)
 - [ ] Caching list data (Redis)
 - [ ] Add new character to list
 - [ ] List Characters Component
