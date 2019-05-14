@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { CheckBox, TextInput, Button, Table, TableBody, TableCell, TableFooter, TableHeader, TableRow,
+import { Select, CheckBox, TextInput, Button, Table, TableBody, TableCell, TableFooter, TableHeader, TableRow,
   Text } from 'grommet';
 import { Search } from 'grommet-icons';
 
@@ -11,6 +11,9 @@ class CreateProfile extends Component {
       accountName: "",
       characters: [],
       checkedChar: -1,
+      leagues: [],
+      selectedLeague: '',
+      charsInLeague: []
 
     }
   }
@@ -20,6 +23,14 @@ class CreateProfile extends Component {
         console.log('result: ' + res.data);
         let id = 0;
         for (let c of res.data){
+          if (this.state.leagues.indexOf(c['league']) == -1){
+            let updatedLeagues = this.state.leagues;
+            updatedLeagues.push(c['league']);
+            this.setState({
+              leagues: updatedLeagues,
+              selectedLeague: this.state.leagues[0]
+            })
+          }
           c['id'] = id;
           id += 1;
         }
@@ -42,6 +53,15 @@ class CreateProfile extends Component {
   })
   }
 
+  setLeagueScope(league) {
+    console.log(league.value)
+    this.setState({
+      selectedLeague: league.value,
+      charsInLeague: this.state.characters.filter(item => item['league'] === league.value)
+    })
+
+  }
+
   render() {
     return (
       <div className="createProfile">
@@ -55,6 +75,11 @@ class CreateProfile extends Component {
           icon={<Search />}
           label="Find"
           onClick={() => this.onSearchAccountClick()}
+          />
+        <Select
+          options={this.state.leagues}
+          value={this.state.selectedLeague}
+          onChange={event => this.setLeagueScope(event)}
           />
         <Table caption={'Characters'}>
           <TableHeader>
@@ -77,7 +102,7 @@ class CreateProfile extends Component {
             </TableRow>
           </TableHeader>
           <TableBody>
-        {this.state.characters.map((char) => (
+        {this.state.charsInLeague.map((char) => (
 <TableRow key={char.id}>
   <TableCell>
     <CheckBox
