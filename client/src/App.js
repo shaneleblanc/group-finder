@@ -48,6 +48,7 @@ class App extends Component {
       .then(res => {
         console.log(res);
         if (res.status === 200) {
+          //set cookie
           cookies.set('token', res['data']['id'], {path: '/'});
           cookies.set('userId', res['data']['userId'], {path: '/'});
           this.onLoginSuccess("form", res['data']['id'], res['data']['userId']);

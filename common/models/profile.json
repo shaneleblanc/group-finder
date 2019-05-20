@@ -13,7 +13,26 @@
     },
     "accountName": {
       "type": "string"
+    },
+    "characterName": {
+      "type": "string"
+    },
+    "characterLevel": {
+      "type": "string"
+    },
+    "characterClass": {
+      "type": "string"
+    },
+    "realm": {
+      "type": "string"
+    },
+    "timeZone": {
+      "type": "string"
+    },
+    "hoursAvailable": {
+      "type": "string"
     }
+
   },
   "validations": [],
   "relations": {},
